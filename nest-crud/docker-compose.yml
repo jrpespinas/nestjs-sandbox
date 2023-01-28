@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  # Container for the CRUD
+  nest-crud:
+    # Locate local Dockerfile
+    build: .
+
+    # <application-port>:<container-port>
+    # Access the server via Application Port
+    ports:
+      - "8000:3000"
+
+    # Allows modifying the code on the fly without rebuilding the image
+    volumes:
+      - .:/app
