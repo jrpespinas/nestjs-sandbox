@@ -1,15 +1,48 @@
 version: "3.9"
 services:
   # Container for the CRUD
-  nest-crud:
+  server:
     # Locate local Dockerfile
     build: .
 
-    # <application-port>:<container-port>
-    # Access the server via Application Port
+    # Arbitrary container name
+    container_name: nest-crud
+
+    # <host-port>:<container-port>
+    # Services-to-services communication goes through the container port
+    # Access from outside the containers goes through the host port
     ports:
-      - "8000:3000"
+      - 8000:3000
+
+    env_file:
+      - .environment/nest-crud-dev.env
 
     # Allows modifying the code on the fly without rebuilding the image
     volumes:
       - .:/app
+
+    # Runs after the specified service(s)
+    depends_on:
+      - postgres
+
+  # Container for the DB
+  postgres:
+    image: postgres:15
+    container_name: nestjs-db
+    ports:
+      - 8080:5432
+    env_file:
+      - .environment/nest-crud-dev.env
+    volumes:
+      - postgres_data:/data/db
+    restart: always
+
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: nestjs-pgadmin
+  #   restart: always
+  #   env_file:
+  #     - .environment/nest-crud-dev.env
+
+volumes:
+  postgres_data:

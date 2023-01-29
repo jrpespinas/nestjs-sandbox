@@ -9,6 +9,7 @@ export class JobsService {
   }
 
   findAll() {
+    console.log(process.env.DATABASE_URL);
     return `This action returns all jobs`;
   }
 
