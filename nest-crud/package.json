@@ -5,11 +5,15 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "prisma:dev:migrate": "dotenv -e .environment/.env -- npx prisma migrate dev",
+    "prisma:dev:pull": "dotenv -e .environment/.env -- npx prisma db pull",
     "prisma:studio": "dotenv -e .environment/.env -- npx prisma studio",
     "start:hotreload": "dotenv -e .environment/.env -- nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "start:dev": "nest start --watch",
