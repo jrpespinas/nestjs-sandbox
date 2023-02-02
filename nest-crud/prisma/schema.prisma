@@ -10,25 +10,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email String @unique
+  hash String
+  username String?
+
+  jobs Jobs[]
+  @@map("users")
+}
+
 model Jobs {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 
   jobTitle String 
-  company String
+  organization String
+  salary String?
   description String?
   responsibilities String[]
   benefits String[]
   contact String[]
-}
 
-model Organizations {
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 
-  name String
-  numberOfEmployees Int
-  natureOfBusiness String
+  @@map("jobs")
 }

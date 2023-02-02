@@ -37,12 +37,14 @@ services:
       - postgres_data:/data/db
     restart: always
 
-  # pgadmin:
-  #   image: dpage/pgadmin4:latest
-  #   container_name: nestjs-pgadmin
-  #   restart: always
-  #   env_file:
-  #     - .environment/nest-crud-dev.env
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: nestjs-pgadmin
+    restart: always
+    ports:
+      - 8082:80
+    env_file:
+      - .environment/nest-crud-dev.env
 
 volumes:
   postgres_data:
