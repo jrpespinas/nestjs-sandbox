@@ -1,22 +1,23 @@
-import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
+
 import { PrismaService } from 'src/prisma/prisma.service';
 import { APIResponse } from 'src/json-response';
 import { AuthDTO } from './dto';
-import { IsEmail, isInstance } from 'class-validator';
-import {
-  PrismaClientExtensionError,
-  PrismaClientKnownRequestError,
-} from '@prisma/client/runtime';
+import { JWTHelpers } from './helpers/jwt.helper';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private jwtHelper: JWTHelpers) {}
 
+  /**
+   * Creates a new user
+   * @param {AuthDTO} dto - transfer object
+   * @returns {APIResponse} success or error response json
+   */
   async signup(dto: AuthDTO) {
     // Generate hash for the password before storing in the database
     const hash = await argon.hash(dto.password);
-    console.log('this is the hash', hash);
 
     // Add user to the database
     try {
@@ -32,8 +33,13 @@ export class AuthService {
         },
       });
 
+      const token = await this.jwtHelper.signToken(user.id, user.email);
+
       // Return success response
-      return APIResponse.success(HttpStatus.OK, { data: user });
+      return APIResponse.success(HttpStatus.OK, {
+        data: token,
+        message: 'here is your access token',
+      });
     } catch (error) {
       // Throw user-friendly error message if error comes from prisma and is code P2002
       if (error.code == 'P2002')
@@ -49,6 +55,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * Creates a new user
+   * @param {AuthDTO} dto - transfer object
+   * @returns {APIResponse} success or error response json
+   */
   async login(dto: AuthDTO) {
     // find user by email
     const user = await this.prisma.user.findFirst({
@@ -72,6 +83,11 @@ export class AuthService {
       });
     }
 
-    return APIResponse.success(HttpStatus.OK);
+    const token = await this.jwtHelper.signToken(user.id, user.email);
+
+    return APIResponse.success(HttpStatus.OK, {
+      data: token,
+      message: 'here is your access token',
+    });
   }
 }

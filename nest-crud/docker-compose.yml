@@ -1,29 +1,29 @@
 version: "3.9"
 services:
-  # Container for the CRUD
-  server:
-    # Locate local Dockerfile
-    build: .
+  # # Container for the CRUD
+  # server:
+  #   # Locate local Dockerfile
+  #   build: .
 
-    # Arbitrary container name
-    container_name: nest-crud
+  #   # Arbitrary container name
+  #   container_name: nest-crud
 
-    # <host-port>:<container-port>
-    # Services-to-services communication goes through the container port
-    # Access from outside the containers goes through the host port
-    ports:
-      - 8000:3000
+  #   # <host-port>:<container-port>
+  #   # Services-to-services communication goes through the container port
+  #   # Access from outside the containers goes through the host port
+  #   ports:
+  #     - 8000:3000
 
-    env_file:
-      - .environment/nest-crud-dev.env
+  #   env_file:
+  #     - .environment/nest-crud-dev.env
 
-    # Allows modifying the code on the fly without rebuilding the image
-    volumes:
-      - .:/app
+  #   # Allows modifying the code on the fly without rebuilding the image
+  #   volumes:
+  #     - .:/app
 
-    # Runs after the specified service(s)
-    depends_on:
-      - postgres
+  #   # Runs after the specified service(s)
+  #   depends_on:
+  #     - postgres
 
   # Container for the DB
   postgres:

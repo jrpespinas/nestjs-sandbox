@@ -9,10 +9,13 @@
     "schema": "src/prisma/schema.prisma"
   },
   "scripts": {
+    "db:dev:rm": "docker compose rm -s -f -v",
+    "db:dev:up": "docker compose up -d",
+    "db:dev:restart": "yarn db:dev:rm && yarn db:dev:up && sleep 3 && yarn prisma:dev:deploy",
+    "prisma:dev:deploy": "dotenv -e .environment/.env -- prisma migrate deploy",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "prisma:dev:migrate": "dotenv -e .environment/.env -- npx prisma migrate dev",
     "prisma:dev:pull": "dotenv -e .environment/.env -- npx prisma db pull",
     "prisma:studio": "dotenv -e .environment/.env -- npx prisma studio",
     "start:hotreload": "dotenv -e .environment/.env -- nest build --webpack --webpackPath webpack-hmr.config.js --watch",
@@ -29,8 +32,11 @@
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/jwt": "^10.0.1",
     "@nestjs/mapped-types": "*",
+    "@nestjs/passport": "^9.0.1",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/platform-fastify": "^9.2.1",
     "@prisma/client": "^4.9.0",
@@ -38,6 +44,8 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dotenv-cli": "^7.0.0",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
@@ -48,6 +56,7 @@
     "@types/express": "^4.17.13",
     "@types/jest": "29.2.4",
     "@types/node": "18.11.18",
+    "@types/passport-jwt": "^3.0.8",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
