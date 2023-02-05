@@ -1,6 +1,3 @@
-import { HttpStatus } from '@nestjs/common';
-import { Http2ServerRequest } from 'http2';
-
 export interface JSONResponse {
   statusCode: number;
   message?: Array<string> | string;

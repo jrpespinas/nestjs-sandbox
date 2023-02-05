@@ -1,8 +1,8 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
 
-import { PrismaService } from 'src/prisma/prisma.service';
-import { APIResponse } from 'src/json-response';
+import { PrismaService } from '../prisma/prisma.service';
+import { APIResponse } from '../json-response';
 import { AuthDTO } from './dto';
 import { JWTHelpers } from './helpers/jwt';
 
