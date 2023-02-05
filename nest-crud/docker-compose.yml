@@ -25,10 +25,10 @@ services:
   #   depends_on:
   #     - postgres
 
-  # Container for the DB
-  postgres:
+  # DEV Database
+  postgres-dev:
     image: postgres:15
-    container_name: nestjs-db
+    container_name: dev-db
     ports:
       - 8080:5432
     env_file:
@@ -37,12 +37,24 @@ services:
       - postgres_data:/data/db
     restart: always
 
+    # TEST Database
+  postgres-test:
+    image: postgres:15
+    container_name: test-db
+    ports:
+      - 8081:5432
+    env_file:
+      - .environment/nest-crud-dev.env
+    volumes:
+      - postgres_data:/data/db
+    restart: always  
+
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: nestjs-pgadmin
     restart: always
     ports:
-      - 8082:80
+      - 9090:80
     env_file:
       - .environment/nest-crud-dev.env
 
