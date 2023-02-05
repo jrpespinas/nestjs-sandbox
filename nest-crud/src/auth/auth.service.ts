@@ -4,7 +4,7 @@ import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { APIResponse } from 'src/json-response';
 import { AuthDTO } from './dto';
-import { JWTHelpers } from './helpers/jwt.helper';
+import { JWTHelpers } from './helpers/jwt';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +20,7 @@ export class AuthService {
     const hash = await argon.hash(dto.password);
 
     // Add user to the database
+    // <select> - return necessary details
     try {
       const user = await this.prisma.user.create({
         data: {
@@ -33,12 +34,13 @@ export class AuthService {
         },
       });
 
+      // Sign JWT Token
       const token = await this.jwtHelper.signToken(user.id, user.email);
 
-      // Return success response
+      // Return token and success response
       return APIResponse.success(HttpStatus.OK, {
         data: token,
-        message: 'here is your access token',
+        message: ['success', 'here is your access token'],
       });
     } catch (error) {
       // Throw user-friendly error message if error comes from prisma and is code P2002
@@ -83,11 +85,13 @@ export class AuthService {
       });
     }
 
+    // Sign JWT Token
     const token = await this.jwtHelper.signToken(user.id, user.email);
 
+    // Return token and success response
     return APIResponse.success(HttpStatus.OK, {
       data: token,
-      message: 'here is your access token',
+      message: ['success', 'here is your access token'],
     });
   }
 }

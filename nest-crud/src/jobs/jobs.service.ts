@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 
 @Injectable()
 export class JobsService {
+  constructor(private prisma: PrismaService) {}
+
   create(createJobDto: CreateJobDto) {
     return 'This action adds a new job';
   }
 
   findAll() {
-    console.log(process.env.DATABASE_URL);
     return `This action returns all jobs`;
   }
 

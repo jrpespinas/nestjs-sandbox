@@ -2,33 +2,30 @@ import { HttpStatus } from '@nestjs/common';
 import { Http2ServerRequest } from 'http2';
 
 export interface JSONResponse {
-  status: 'success' | 'fail' | 'error';
-  code: number;
-  message?: string;
+  statusCode: number;
+  message?: Array<string> | string;
   data?: any;
   payload?: any;
 }
 
 export class APIResponse {
   public static success(
-    code: number,
-    options?: { data?: any; message?: string },
+    statusCode: number,
+    options?: { data?: any; message?: Array<string> | string },
   ): JSONResponse {
     return {
-      code,
-      status: 'success',
-      data: options?.data,
+      statusCode,
       message: options?.message,
+      data: options?.data,
     };
   }
 
   public static error(
-    code: number,
-    options?: { message?: string; payload?: any },
+    statusCode: number,
+    options?: { message?: Array<string> | string; payload?: any },
   ): JSONResponse {
     return {
-      code,
-      status: 'error',
+      statusCode,
       message: options?.message,
       payload: options?.payload,
     };
