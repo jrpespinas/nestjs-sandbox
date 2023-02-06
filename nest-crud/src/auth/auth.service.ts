@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -38,7 +38,7 @@ export class AuthService {
       const token = await this.jwtHelper.signToken(user.id, user.email);
 
       // Return token and success response
-      return APIResponse.success(HttpStatus.OK, {
+      return APIResponse.success(HttpStatus.ACCEPTED, {
         data: token,
         message: ['success', 'here is your access token'],
       });

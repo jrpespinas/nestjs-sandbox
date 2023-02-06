@@ -18,12 +18,4 @@ export class JobsService {
   findOne(id: number) {
     return `This action returns a #${id} job`;
   }
-
-  update(id: number, updateJobDto: UpdateJobDto) {
-    return `This action updates a #${id} job`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} job`;
-  }
 }
